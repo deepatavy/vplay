@@ -12,11 +12,7 @@ class VideoItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const VideoPlayerScreen(),
-          ),
-        );
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoPlayerScreen(isLinear: isLinear)));
       },
       child: Card(
         margin: const EdgeInsets.all(16),

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 import 'package:provider/provider.dart';
 import 'package:vplay/feature/video_player/viewmodel/video_player_vm.dart';
+import 'package:vplay/feature/video_player/widgets/outline_widget.dart';
+import 'package:vplay/feature/video_player/widgets/seekbar_widget.dart';
+import 'package:vplay/feature/video_player/widgets/video_view_widget.dart';
 
 class VideoPlayerScreen extends StatelessWidget {
-  const VideoPlayerScreen({super.key});
+  final bool isLinear;
+
+  const VideoPlayerScreen({super.key, required this.isLinear});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => VideoPlayerViewModel(),
+      create: (context) => VideoPlayerViewModel(isLinear),
       child: const VideoPlayerWidget(),
     );
   }
@@ -32,55 +36,13 @@ class VideoPlayerWidget extends StatelessWidget {
             child: SizedBox(
               height: double.infinity,
               width: double.infinity,
-              child: MVideoPlayer(viewModel),
+              child: VideoViewWidget(viewModel),
             ),
           ),
-          if (viewModel.showSeekbar)
-            Container(
-              height: 72,
-              color: const Color(0x88000000),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: IconButton(
-                        onPressed: () {
-                          viewModel.playPause();
-                        },
-                        color: Colors.white,
-                        icon: Icon(viewModel.isPlaying ? Icons.pause : Icons.play_arrow)),
-                  ),
-                  Expanded(
-                    child: Slider(
-                      value: viewModel.currentPosition,
-                      min: 0.0,
-                      max: viewModel.totalDuration,
-                      onChanged: (value) {
-                        viewModel.seekTo(value);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          if (viewModel.showSeekbar && !viewModel.showOutline) SeekbarWidget(viewModel),
+          if (viewModel.showOutline) OutlineWidget(viewModel)
         ],
       ),
-    );
-  }
-}
-
-class MVideoPlayer extends StatelessWidget {
-  final VideoPlayerViewModel viewModel;
-
-  const MVideoPlayer(this.viewModel, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-
-    return AspectRatio(
-      aspectRatio: 16 / 9,
-      child: VideoPlayer(viewModel.controller),
     );
   }
 }

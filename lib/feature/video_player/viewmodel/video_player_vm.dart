@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:vplay/commons/asset_paths.dart';
+import 'package:vplay/feature/video_player/model/chapter_model.dart';
 
 class VideoPlayerViewModel extends ChangeNotifier {
+  List<Chapter> chapterList = [];
+  List<double> breakPoints = [];
   late VideoPlayerController controller;
   bool _isPlaying = false;
   bool _showSeekbar = true;
+  bool _showOutline = false;
   double _currentPosition = 0.0;
   double _totalDuration = 0.0;
+  double breakpoint = 0.0;
+  late bool _isLinear;
 
   bool get isPlaying => _isPlaying;
 
   bool get showSeekbar => _showSeekbar;
 
+  bool get showOutline => _showOutline;
+
   double get currentPosition => _currentPosition;
 
   double get totalDuration => _totalDuration;
 
-  VideoPlayerViewModel() {
+  VideoPlayerViewModel(bool isLinear) {
+    _isLinear = isLinear;
+    if (!isLinear) loadExerciseData();
     controller = VideoPlayerController.asset(sampleVideoPath)
       ..initialize().then((_) {
         playPause();
@@ -28,6 +38,9 @@ class VideoPlayerViewModel extends ChangeNotifier {
     controller.addListener(() {
       _currentPosition = controller.value.position.inMilliseconds.toDouble();
       notifyListeners();
+      if (controller.value.position.inSeconds.toDouble() == breakpoint && !_isLinear) {
+        pauseAndShowOutline();
+      }
     });
   }
 
@@ -48,6 +61,56 @@ class VideoPlayerViewModel extends ChangeNotifier {
 
   void seekTo(double milliseconds) {
     controller.seekTo(Duration(milliseconds: milliseconds.toInt()));
+    if (!_isLinear) updateNextBreakPoint(milliseconds);
+  }
+
+  void updateNextBreakPoint(double milliseconds) {
+    breakpoint = breakPoints.firstWhere((element) => element * 1000 > milliseconds);
+    notifyListeners();
+  }
+
+  void pauseAndShowOutline() {
+    controller.pause();
+    _isPlaying = false;
+    _showOutline = true;
+    _showSeekbar = false;
+    notifyListeners();
+  }
+
+  void performSelectionFromOutline(int index) {
+    seekTo(chapterList[index].seekLocation.inMilliseconds.toDouble());
+    if (index != chapterList.length - 1) {
+      breakpoint = chapterList[index + 1].seekLocation.inSeconds.toDouble();
+    } else {
+      breakpoint = controller.value.duration.inSeconds.toDouble();
+    }
+    controller.play();
+    _showOutline = false;
+    _isPlaying = true;
+    notifyListeners();
+  }
+
+  void loadExerciseData() {
+    chapterList.clear();
+    chapterList.add(
+        Chapter('Exercise 1', 'Test & Trick Your Brain', const Duration(minutes: 0, seconds: 41, milliseconds: 800)));
+    chapterList.add(Chapter('Exercise 2', 'Hand Gestures', const Duration(minutes: 3, seconds: 52)));
+    chapterList.add(Chapter('Exercise 3', 'Use Of Non Dominant Hand', const Duration(minutes: 5, seconds: 21)));
+    chapterList.add(Chapter('Exercise 4', 'Play Mind Challenging Game', const Duration(minutes: 6, seconds: 13)));
+    chapterList.add(Chapter('Exercise 5', 'Make Your Brain Work', const Duration(minutes: 7, seconds: 17)));
+
+    for (var element in chapterList) {
+      breakPoints.add(element.seekLocation.inSeconds.toDouble());
+    }
+    breakpoint = breakPoints[0];
+  }
+
+  String formatDuration(double milliseconds) {
+    Duration duration = Duration(milliseconds: milliseconds.toInt());
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${duration.inHours}:$twoDigitMinutes:$twoDigitSeconds";
   }
 
   @override

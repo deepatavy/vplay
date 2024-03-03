@@ -24,15 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
-              child: VideoItemWidget(
-            isLinear: true,
-          )),
-          Expanded(
-            child: VideoItemWidget(
-              isLinear: false,
-            ),
-          ),
+          Expanded(child: VideoItemWidget(isLinear: true)),
+          Expanded(child: VideoItemWidget(isLinear: false)),
         ],
       ),
     );
