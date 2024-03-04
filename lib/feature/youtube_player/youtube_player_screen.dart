@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vplay/commons/app_texts.dart';
 import 'package:vplay/feature/youtube_player/viewmodel/youtube_vm.dart';
-import 'package:vplay/feature/youtube_player/viewmodel/yt_outline_widget.dart';
+import 'package:vplay/feature/youtube_player/widgets/yt_outline_widget.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class YoutubePlayerScreen extends StatelessWidget {
