@@ -1,7 +1,7 @@
-class Chapter {
+class ChapterModel {
   String title;
   String subTitle;
   Duration seekLocation;
 
-  Chapter(this.title, this.subTitle, this.seekLocation);
+  ChapterModel(this.title, this.subTitle, this.seekLocation);
 }

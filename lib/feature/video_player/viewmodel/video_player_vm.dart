@@ -4,7 +4,7 @@ import 'package:vplay/commons/asset_paths.dart';
 import 'package:vplay/feature/video_player/model/chapter_model.dart';
 
 class VideoPlayerViewModel extends ChangeNotifier {
-  List<Chapter> chapterList = [];
+  List<ChapterModel> chapterList = [];
   List<double> breakPoints = [];
   late VideoPlayerController controller;
   bool _isPlaying = false;
@@ -91,11 +91,11 @@ class VideoPlayerViewModel extends ChangeNotifier {
   void loadExerciseData() {
     chapterList.clear();
     chapterList.add(
-        Chapter('Exercise 1', 'Test & Trick Your Brain', const Duration(minutes: 0, seconds: 41, milliseconds: 800)));
-    chapterList.add(Chapter('Exercise 2', 'Hand Gestures', const Duration(minutes: 3, seconds: 52)));
-    chapterList.add(Chapter('Exercise 3', 'Use Of Non Dominant Hand', const Duration(minutes: 5, seconds: 21)));
-    chapterList.add(Chapter('Exercise 4', 'Play Mind Challenging Game', const Duration(minutes: 6, seconds: 13)));
-    chapterList.add(Chapter('Exercise 5', 'Make Your Brain Work', const Duration(minutes: 7, seconds: 17)));
+        ChapterModel('Exercise 1', 'Test & Trick Your Brain', const Duration(minutes: 0, seconds: 41, milliseconds: 800)));
+    chapterList.add(ChapterModel('Exercise 2', 'Hand Gestures', const Duration(minutes: 3, seconds: 52)));
+    chapterList.add(ChapterModel('Exercise 3', 'Use Of Non Dominant Hand', const Duration(minutes: 5, seconds: 21)));
+    chapterList.add(ChapterModel('Exercise 4', 'Play Mind Challenging Game', const Duration(minutes: 6, seconds: 13)));
+    chapterList.add(ChapterModel('Exercise 5', 'Make Your Brain Work', const Duration(minutes: 7, seconds: 17)));
 
     for (var element in chapterList) {
       breakPoints.add(element.seekLocation.inSeconds.toDouble());
