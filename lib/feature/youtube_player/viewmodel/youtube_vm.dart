@@ -11,6 +11,7 @@ class YoutubePlayerViewModel with ChangeNotifier {
   bool _showOutline = false;
 
   bool get showOutline => _showOutline;
+
   String get currentURL => _currentURL;
   String _currentURL = '';
 
@@ -88,8 +89,8 @@ class YoutubePlayerViewModel with ChangeNotifier {
 
   void loadData() {
     vidList.clear();
-    vidList.add(VideoModel("1 Game Of Thrones", gotURL));
-    vidList.add(VideoModel("2 Breaking Bad", bbURL));
-    vidList.add(VideoModel("3 The Sopranos", sopranosURL));
+    vidList.add(VideoModel(gotTitle, gotURL));
+    vidList.add(VideoModel(bbTitle, bbURL));
+    vidList.add(VideoModel(sopranosTitle, sopranosURL));
   }
 }
