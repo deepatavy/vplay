@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vplay/commons/app_texts.dart';
 import 'package:vplay/commons/asset_paths.dart';
 import 'package:vplay/feature/video_player/video_player_screen.dart';
+import 'package:vplay/feature/youtube_player/youtube_player_screen.dart';
 
 class VideoItemWidget extends StatelessWidget {
   final bool isLinear;
@@ -12,7 +13,8 @@ class VideoItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoPlayerScreen(isLinear: isLinear)));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const YoutubePlayerScreen()));
+        // Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoPlayerScreen(isLinear: isLinear)));
       },
       child: Card(
         margin: const EdgeInsets.all(16),
