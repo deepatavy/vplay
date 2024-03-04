@@ -12,6 +12,9 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
+  video_player: ^2.8.2
+  provider: ^6.1.2
+  youtube_player_flutter: ^9.0.0
 
 dev_dependencies:
   flutter_test:
@@ -22,4 +25,5 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/images/
     - assets/videos/
