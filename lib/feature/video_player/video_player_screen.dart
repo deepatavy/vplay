@@ -6,14 +6,13 @@ import 'package:vplay/feature/video_player/widgets/seekbar_widget.dart';
 import 'package:vplay/feature/video_player/widgets/video_view_widget.dart';
 
 class VideoPlayerScreen extends StatelessWidget {
-  final bool isLinear;
 
-  const VideoPlayerScreen({super.key, required this.isLinear});
+  const VideoPlayerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => VideoPlayerViewModel(isLinear),
+      create: (context) => VideoPlayerViewModel(),
       child: const VideoPlayerWidget(),
     );
   }

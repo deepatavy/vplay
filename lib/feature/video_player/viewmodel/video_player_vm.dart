@@ -13,7 +13,6 @@ class VideoPlayerViewModel extends ChangeNotifier {
   double _currentPosition = 0.0;
   double _totalDuration = 0.0;
   double breakpoint = 0.0;
-  late bool _isLinear;
 
   bool get isPlaying => _isPlaying;
 
@@ -25,9 +24,8 @@ class VideoPlayerViewModel extends ChangeNotifier {
 
   double get totalDuration => _totalDuration;
 
-  VideoPlayerViewModel(bool isLinear) {
-    _isLinear = isLinear;
-    if (!isLinear) loadExerciseData();
+  VideoPlayerViewModel() {
+    loadExerciseData();
     controller = VideoPlayerController.asset(sampleVideoPath)
       ..initialize().then((_) {
         playPause();
@@ -38,7 +36,7 @@ class VideoPlayerViewModel extends ChangeNotifier {
     controller.addListener(() {
       _currentPosition = controller.value.position.inMilliseconds.toDouble();
       notifyListeners();
-      if (controller.value.position.inSeconds.toDouble() == breakpoint && !_isLinear) {
+      if (controller.value.position.inSeconds.toDouble() == breakpoint) {
         pauseAndShowOutline();
       }
     });
@@ -61,7 +59,7 @@ class VideoPlayerViewModel extends ChangeNotifier {
 
   void seekTo(double milliseconds) {
     controller.seekTo(Duration(milliseconds: milliseconds.toInt()));
-    if (!_isLinear) updateNextBreakPoint(milliseconds);
+    updateNextBreakPoint(milliseconds);
   }
 
   void updateNextBreakPoint(double milliseconds) {
